@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECEI - Connexion</title>
+    <link rel="icon" type="image/png" href="/static/images/ecei_electronique_logo.jpg">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="../static/bootstrap-5.3.3/css/bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="../static/scripts/connexion.js"></script>
+</head>
+<body>
+
+<header>
+    <a href="/">
+        <img src="../static/images/ecei_electronique_logo.jpg" alt="logo">
+    </a>
+</header>
+<main>
+    <div class="connexion">
+        <div class="header_connexion">
+            <h1>CONNEXION</h1>
+        </div>
+        <form action="{{ url_for('login') }}" method="POST">
+            <h5 style="margin-bottom: -20px;">Identifiant</h5>
+            <label>
+                <input type="text" name="username" placeholder="Identifiant" required>
+            </label>
+            <h5 style="margin-bottom: -20px;">Mot de passe</h5>
+            <label class="password-container">
+                <input type="password" name="password" placeholder="Mot de passe" id="mdp" required>
+                <button id="mask" type="button">
+                    <img id="icon" style="height: 15px;margin-top: 50px;" src="../static/images/close_icon.png">
+                </button>
+            </label>
+            <div>
+                <button class="btn-connexion" type="submit">Connexion</button>
+            </div>
+        </form>
+    </div>
+    {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-danger" style="margin-top: 650px;">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+</main>
+
+<script src="../static/bootstrap-5.3.3/js/bootstrap.js"></script>
+</body>
+<footer>
+    <h6>2025 - ECEI Electronique - 1041 rue Pierre Compte 31340 Villematier</h6>
+</footer>
+</html>

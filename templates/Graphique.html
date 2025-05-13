@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphique</title>
+    <script src="/static/package/dist/chart.umd.js"></script>
+    <script src="{{ url_for('static', filename='html2pdf/dist/html2pdf.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='chartjs-plugin-zoom-2.2.0/package/dist/chartjs-plugin-zoom.js') }}"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; width: 85%; margin: 0;height: 100%}
+        #contenuPDF { display: block; }
+        #graphiqueContainer { display: none; }
+        button {
+            padding: 5px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            background: #007bff;
+            color: white;
+            font-size: 12px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        h1{
+           margin:10px;
+        }
+    </style>
+</head>
+<body>
+<div id="prod-data" data-produit-id="{{ reference_produit }}"></div>
+    <h1>Graphique</h1>
+    <button onclick="telechargerPDF()">Télécharger PDF</button>
+    <div id="messageContainer"></div>
+    <!-- Conteneur pour le graphique et le bouton de téléchargement -->
+    <div id="contenuPDF">
+        <div id="graphiqueContainer">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+<script src="/static/scripts/graphique.js"></script>
+</body>
+</html>

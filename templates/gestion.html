@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>ECEI - Gestion Opérateur</title>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="../static/scripts/operateurs.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="reference" class="reference-addProd"><h6>Gestion des Opérateurs</h6></div>
+    <br><br><br><br>
+    <div id="table-container">
+        <div id="table-Operateurs"></div>
+    </div>
+    <button id="add-ope" class="addOpe">Ajouter un Opérateur</button>
+    <button id="save-gestion" class="save-gestion" style="margin-top: 420px;" >Enregistrer les modifications</button>
+{% endblock %}

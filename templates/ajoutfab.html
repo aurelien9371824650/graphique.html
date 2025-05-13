@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>ECEI - Ajout Fabrication</title>
+{% endblock %}
+
+
+{% block script %}
+    <script type="text/javascript" src="../static/scripts/ajoutfab.js"></script>
+{% endblock %}
+
+{% block marque %}
+    <a href="produits"><button class="menu" type="button">Produits</button></a>
+    <a href="fabrication"><button class="menu" type="button" style="background-color: #D0F7C2FF">Fabrications</button></a>
+{% endblock %}
+
+{% block content %}
+    <div class="reference-addProd"><h6>Mise en Fabrication</h6></div>
+    <br><br><br><br>
+    <div id="numSerie" data-numSerie="{{ nouveau_sn }}"></div>
+<div id="table-container"></div>
+        <div id="table-ajoutfab"></div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <ol>
+        <button id="add-row" class="addRowfab" >Ajouter une ligne</button>
+    </ol>
+    <br><br>
+    <ol>
+        <button id="valide" class="valide" >Ajouter Fabrication</button>
+    </ol>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>ECEI - Fiche Fabrication</title>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="../static/scripts/TAB_Lot.js"></script>
+    <script type="text/javascript" src="../static/scripts/loadimage.js"></script>
+{% endblock %}
+
+{% block marque %}
+    <a href="produits"><button class="menu" type="button" style="background-color: #D0F7C2FF">Produits</button></a>
+    <a href="fabrication"><button class="menu" type="button">Fabrications</button></a>
+{% endblock %}
+
+{% block content %}
+    <div id="reference" class="reference-addProd"><h6>Fiche Fabrication</h6></div>
+    <br><br><br><br><br>
+    <div id="parametres" class="settingsRef"><h6>Série</h6></div>
+    <br><br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-4" style="margin-top: -20px; margin-left: 200px;">
+                <div class="form-group" style="">
+                    <label for="famille" style="">Numéro de Lot:</label>
+                    <input type="text" id="numSerie" name="numSerie" class="form-control" style="">
+                </div>
+                <div class="form-group" style="">
+                    <label for="reference" style="">Référence:</label>
+                    <input type="text" id="reference" name="reference" class="form-control" style="">
+                </div>
+                <div class="form-group" style="">
+                    <label for="designation" style="">Désignation:</label>
+                    <input type="text" id="designation" name="designation" class="form-control" style="">
+                </div>
+                <div class="form-group" style="">
+                    <label for="date" style="">Date de Fabrication:</label>
+                    <input type="date" id="date" name="date" class="form-control" style="">
+                </div>
+                <br><br>
+                <a href="mesures"> <button id="mesBtn" class="mesBtn" style="margin-left: -200px;">Réaliser les mesures</button></a>
+                <br><br><br>
+                <button id="pdfBtn" class="pdfBtn" style="margin-left: -200px;">Générer le PDF <img style="margin-right: -20px ;height: 30px; width: 28px;" src="../static/images/icon-pdf.png"></button>
+
+            </div>
+            <div class="col-4">
+                <div id="table-container"></div>
+                    <div id="table-Lot"></div>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                    <ol>
+                        <button id="add-row" class="add-Row">Ajouter une ligne</button>
+                    </ol>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="">
+            <div class="col-4">
+                <br><br><br>
+                <ol>
+                    <button id="valide" class="valide" style="" >Enregistrer</button>
+                </ol>
+            </div>
+    </div>
+</div>
+
+{% endblock %}

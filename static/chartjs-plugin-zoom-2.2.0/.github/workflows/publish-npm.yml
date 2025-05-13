@@ -1,0 +1,135 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.trim.outputs.version }}
+    steps:
+      - id: trim
+        run: echo "::set-output name=version::${TAG:1}"
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Test
+      run: |
+        npm ci
+        xvfb-run --auto-servernum npm test
+
+  publish-npm:
+    needs: [test, setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+      - name: Setup and build
+        run: |
+          npm ci
+          npm run build
+          npm pack
+
+      - name: Publish @next
+        run: npm publish --tag next
+        if: github.event.release.prerelease == true
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+
+      - name: Publish @latest
+        run: npm publish --tag latest
+        if: github.event.release.prerelease == false
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+
+      - name: Upload chartjs-plugin-zoom.tgz
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ format('chartjs-plugin-zoom-{0}.tgz', needs.setup.outputs.version) }}
+          asset_name: ${{ format('chartjs-plugin-zoom-{0}.tgz', needs.setup.outputs.version) }}
+          asset_content_type: application/gzip
+
+      - name: Upload chartjs-plugin-zoom.js
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: dist/chartjs-plugin-zoom.js
+          asset_name: chartjs-plugin-zoom.js
+          asset_content_type: application/javascript
+
+      - name: Upload chartjs-plugin-zoom.min.js
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: dist/chartjs-plugin-zoom.min.js
+          asset_name: chartjs-plugin-zoom.min.js
+          asset_content_type: application/javascript
+
+      - name: Build docs (version)
+        run: |
+          ./scripts/docs-config.sh "$VERSION" release
+          npm run docs
+        env:
+          VERSION: ${{ needs.setup.outputs.version }}
+
+      - name: Release to GitHub Pages (version)
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_AUTH_TOKEN }}
+          publish_dir: dist/docs
+          destination_dir: ${{ needs.setup.outputs.version }}
+
+  publish-docs:
+    needs: [test, setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      - name: Build docs (latest/next)
+        run: |
+          npm ci
+          npm run build
+          ./scripts/docs-config.sh "$VERSION"
+          npm run docs
+        env:
+          VERSION: ${{ needs.setup.outputs.version }}
+
+      - name: Release to GitHub Pages (latest)
+        if: github.event.release.prerelease == false
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_AUTH_TOKEN }}
+          publish_dir: dist/docs
+          destination_dir: latest
+
+      - name: Release to GitHub Pages (next)
+        if: github.event.release.prerelease == true
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_AUTH_TOKEN }}
+          publish_dir: dist/docs
+          destination_dir: next

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphique Local</title>
+    <script src="echarts.min.js"></script> <!-- Fichier en local -->
+</head>
+<body>
+<div id="chart" style="width: 600px; height: 400px;"></div>
+
+<script>
+    var chart = echarts.init(document.getElementById('chart'));
+
+    var options = {
+        title: { text: 'Exemple Graphique' },
+        xAxis: { type: 'category', data: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven'] },
+        yAxis: { type: 'value' },
+        series: [{ data: [5, 20, 36, 10, 15], type: 'line' }]
+    };
+
+    chart.setOption(options);
+</script>
+</body>
+</html>

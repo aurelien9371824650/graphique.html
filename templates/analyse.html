@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>ECEI - Analyse</title>
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
+
+{% block marque %}
+    <a href="produits"><button class="menu" type="button">Produits</button></a>
+    <a href="fabrication"><button class="menu" type="button">Fabrications</button></a>
+    <a href="analyse"><button class="menu" type="button" style="background-color: #D0F7C289">Analyse</button></a>
+{% endblock %}
+
+{% block content %}
+    <div id="reference" class="reference-addProd"><h6>Choix Référence pour Mesure</h6></div>
+    <ol>
+        <a href="mesure"><button id="valide-analyse" class="valide-analyse" >Mesurer</button></a>
+    </ol>
+{% endblock %}
+
+

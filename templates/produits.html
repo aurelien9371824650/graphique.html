@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>ECEI - Produit</title>
+{% endblock %}
+
+
+{% block script %}
+    <script type="text/javascript" src="../static/scripts/TAB_Prod.js"></script>
+{% endblock %}
+
+{% block marque %}
+    <a href="produits"><button class="menu" type="button" style="background-color: #D0F7C2FF">Produits</button></a>
+    <a href="fabrication"><button class="menu" type="button">Fabrications</button></a>
+{% endblock %}
+
+{% block content %}
+    <ol>
+        <a href="ajoutProduit"><button class="addBtn" type="button">Ajouter un Produit</button></a>
+    </ol>
+<div id="table-container"></div>
+        <div id="table-Produits"></div>
+{% endblock %}

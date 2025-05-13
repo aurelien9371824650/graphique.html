@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: install
+      run: npm ci
+
+    - name: lint
+      run: npm run lint
+
+    - name: build
+      run: npm run build
+
+    - name: test
+      run: |
+        if [ "${{ runner.os }}" == "Windows" ]; then
+          npm test
+        else
+          xvfb-run --auto-servernum npm test
+        fi
+      shell: bash
+
+    - name: Coveralls Parallel - Chrome
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.github_token }}
+        file: './coverage/chrome/lcov.info'
+        flag-name: ${{ matrix.os }}-chrome
+        parallel: true
+
+    - name: Coveralls Parallel - Firefox
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.github_token }}
+        file: './coverage/firefox/lcov.info'
+        flag-name: ${{ matrix.os }}-firefox
+        parallel: true
+
+  finish:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>ECEI - Mesure</title>
+{% endblock %}
+
+
+{% block script %}
+    <script type="text/javascript" src="../static/scripts/mesure.js"></script>
+{% endblock %}
+
+{% block marque %}
+    <a href="produits"><button class="menu" type="button">Produits</button></a>
+    <a href="fabrication"><button class="menu" type="button">Fabrications</button></a>
+{% endblock %}
+
+{% block content %}
+    <div id="reference" class="reference-mesure"><h6>N° de série</h6></div>
+    <div id="table-container">
+        <div id="table-mesure"></div>
+    </div>
+    <ol>
+        <button id="add-row" class="addRowMes" >Suivant</button>
+    </ol>
+{% endblock %}
+

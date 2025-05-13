@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../static/images/ecei_electronique_logo.jpg">
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link href="../static/bootstrap-5.3.3/css/bootstrap.css" rel="stylesheet">
+    <link href="../static/tabulator-master/dist/css/tabulator.css" rel="stylesheet">
+    <script type="text/javascript" src="../static/tabulator-master/dist/js/tabulator.js"></script>
+    {% block script %}
+    {% endblock %}
+</head>
+<body>
+    <nav class="barre_navigation">
+    <div class="left-icons">
+        <a href="{% if session['user_role'] == 1 %}gestion{% else %}#{% endif %}"
+           style="{% if session['user_role'] != 1 %}pointer-events: none; opacity: 0.5;{% endif %}">
+            <img style="height: 80px; margin-bottom: -18px; margin-top: -18px; filter: invert(1) brightness(1.5) contrast(1.2);" src="../static/images/profiles.png">
+        </a>
+        <h6 style="margin-top: 10px; margin-bottom: -10px; margin-left: -15px; font-weight: bold; color: white;">
+            {% if session['user_role'] == 1 %}
+                Admin
+            {% else %}
+                Opérateur
+            {% endif %}
+        </h6>
+    </div>
+    <ol style="margin-left: 30px;">
+        {% block marque %}
+            <a href="produits"><button class="menu" type="button">Produits</button></a>
+            <a href="fabrication"><button class="menu" type="button">Fabrications</button></a>
+        {% endblock %}
+    </ol>
+    <div class="right-icons">
+        <a href="aide"><img style="height: 80px; margin-bottom: -18px; margin-top: -18px; margin-right: -10px;filter: invert(1);" src="../static/images/help.png"></a>
+        <a href="/"><img style="height: 80px; margin-bottom: -21px; margin-top: -15px;filter: invert(1);" src="../static/images/exit.png"></a>
+    </div>
+</nav>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<script src="../static/bootstrap-5.3.3/js/bootstrap.js"></script>
+</body>
+<footer>
+    <h6>2025 - ECEI Electronique - 1041 rue Pierre Compte 31340 Villematier</h6>
+</footer>
+</html>

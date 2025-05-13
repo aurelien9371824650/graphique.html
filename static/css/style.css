@@ -1,0 +1,768 @@
+#table-Fabrication {
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+#table-Operateurs {
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+div.gestion-operateurs {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    height: 50px;
+    width: 250px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform:  translate(-50%);
+    padding: 13px;
+}
+
+button.addOpe {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    transition: transform 0.3s ease-in-out;
+    height: 40px;
+    width: 850px;
+    /*margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    overflow: auto;
+    margin-top: 360px;
+}
+
+#table-Produits {
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform:  translate(-50%);
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+#table-Produits .tabulator-row .tabulator-cell {
+  display: inline-block; /* Utilisation de flexbox */
+  align-items: center; /* Pour centrer verticalement */
+  justify-content: center; /* Pour centrer horizontalement */
+  position: relative;
+  box-sizing: border-box;
+  padding: 16.5px;
+  border-right: 1px solid #aaa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  outline: none;
+}
+
+#table-mesure {
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    margin-top: 70px;
+}
+
+#table-Lot {
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 98%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-100%);  /* Décale pour centrer complètement */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    margin-left: -300px;
+}
+
+#table-Settings {
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 98%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-100%);  /* Décale pour centrer complètement */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+button.addRow {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    transition: transform 0.3s ease-in-out;
+    height: 40px;
+    width: 1000px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 98%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-100%);  /* Décale pour centrer complètement */
+    overflow: auto;
+}
+
+button.add-Row {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    transition: transform 0.3s ease-in-out;
+    height: 40px;
+    width: 600px;
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 98%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-100%);  /* Décale pour centrer complètement */
+    overflow: auto;
+    margin-left: -300px;
+}
+
+div.reference-addProd {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    height: 50px;
+    width: 250px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform:  translate(-50%);
+    padding: 13px;
+}
+
+.reference-mesure {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    height: 50px;
+    width: 250px;
+    margin-bottom: 10px;
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform:  translate(-50%);
+    padding: 13px;
+}
+
+div.settings-ref {
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    transition: transform 0.3s ease-in-out;
+    height: 40px;
+    width: 200px;
+    margin-left: -280px;
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 98%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-100%);  /* Décale pour centrer complètement */
+    padding: 8px;
+}
+
+div.settingsRef {
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    transition: transform 0.3s ease-in-out;
+    height: 40px;
+    width: 200px;
+    margin-left: -500px;
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 98%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-100%);  /* Décale pour centrer complètement */
+    padding: 8px;
+}
+
+#table-ajoutfab {
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+}
+
+button.addRowfab {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    transition: transform 0.3s ease-in-out;
+    height: 40px;
+    width: 1100px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    overflow: auto;
+}
+
+button.addRowMes {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    transition: transform 0.3s ease-in-out;
+    height: 40px;
+    width: 200px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    overflow: auto;
+    margin-top: 640px;
+}
+
+.image-container {
+      height: 200px;
+      width: 200px;
+      border: 3px solid black;
+      border-radius: 10px;
+      overflow: hidden; /* Pour s'assurer que l'image reste à l'intérieur de la div */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+.image-container img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.form-control{
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+}
+
+button.valide {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    background-color: rgb(27, 163, 243);
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 200px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    overflow: auto;
+}
+
+button.ajout {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    background-color: rgb(27, 163, 243);
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 200px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    overflow: auto;
+}
+
+
+button.save-gestion {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    background-color: rgb(27, 163, 243);
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 250px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    overflow: auto;
+}
+
+button.mesBtn {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    background-color: rgb(78, 81, 161);
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 400px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    overflow: auto;
+}
+
+button.pdfBtn {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    background-color: rgb(117, 122, 253);
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 400px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    overflow: auto;
+}
+
+button.graphBtn {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    background-color: rgb(78, 153, 161);
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 400px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    overflow: auto;
+}
+
+button.graphBtnProd {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+    background-color: rgb(78, 153, 161);
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 200px;
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    overflow: auto;
+}
+
+button.valide-analyse {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: #000000;
+    background-color: rgb(103, 230, 58);
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 200px;
+    margin: 0 auto; /* Centre le tableau horizontalement */
+    position: absolute;  /* Permet de le centrer verticalement */
+    top: auto;  /* Place le tableau à la moitié de la hauteur */
+    left: 50%;  /* Place le tableau à la moitié de la largeur */
+    transform: translate(-50%);  /* Décale pour centrer complètement */
+    overflow: auto;
+    margin-top: 600px;
+}
+
+
+.password-container {
+    position: relative;
+    display: inline-block;
+}
+
+.password-container input {
+    padding-right: 50px; /* Espace pour le bouton */
+}
+
+.password-container button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 30px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+
+/* Appliquer un fond d'écran adaptatif */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;  /* Hauteur minimale = 100% de l'écran */
+    background-image: url("../images/Background-opera-speeddials-community-web-simple-backgrounds.jpg");
+    background-size: cover; /* Ajuste l'image pour qu'elle remplisse l'écran */
+    background-position: center;
+    background-attachment: fixed; /* Garde le fond fixe au scroll */
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-image: url("../images/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+    background-position: center; /* Changez cette valeur pour ajuster la position du fond */
+    background-repeat: no-repeat; /* Assurez-vous que l'image ne se répète pas */
+    background-size: cover;
+
+    background-color: rgba(0, 0, 255, 0);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+}
+
+div.connexion {
+    display: flex;
+    position: fixed;
+    flex-direction: column;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-color: rgba(162, 162, 162, 0.28);
+    height: 500px; /* 50% de la hauteur de la fenêtre */
+    width: 500px;  /* 80% de la largeur de la fenêtre */
+}
+
+div.inputs {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+label input {
+    display: flex;
+    position: relative;
+    margin: 40px 0; /* Ajoute un petit espace entre les inputs */
+    padding: 5px;
+    width: 100%; /* Ajuste la largeur des inputs */
+    max-width: 300px; /* Limite la largeur */
+    min-width: 250px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    border: 0;
+}
+
+div.header_connexion {
+    display: flex;
+    position: fixed;
+    top: 0; /* Positionne en haut, à 5% de la hauteur de la page */
+    left: 50%;
+    transform: translateX(-50%); /* Centre horizontalement */
+    border-radius: 18px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-color: rgb(46, 45, 120);
+    height: 100px; /* 15% de la hauteur de la fenêtre */
+    width: 500px; /* 80% de la largeur de la fenêtre */
+    justify-content: center;  /* Centre le texte horizontalement */
+    align-items: center;
+}
+
+div.header_connexion h1 {
+    text-align: center;
+    color: white;
+    margin: 0;
+    font-family: Ebrima, serif;
+}
+
+.nav-buttons {
+    position: relative; /* Garde les boutons nets */
+    z-index: 1;
+}
+
+button.menu {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    margin-top: 13px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #4d50a1;
+    transition: transform 0.3s ease-in-out;
+    height: 40px;
+    width: auto;
+    font-size: large;
+}
+
+button.addBtn {
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    background-clip: padding-box;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: #2e2d78;
+    transition: transform 0.3s ease-in-out;
+    height: 50px;
+    width: 250px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+}
+
+button.menu:hover {
+    transform: scale(1.1);
+}
+
+button.addBtn:hover {
+    transform: scale(1.1);
+}
+
+button.menu:active {
+    background-color: rgb(208, 247, 194);
+}
+
+button.btn-connexion{
+    position: fixed;
+    color: white;
+    background-color: #2e2d77;
+    border-radius: 15px;
+    height: 50px;
+    width: 250px;
+    font-size: medium;
+    top: 80%; /* Place le bouton au milieu verticalement */
+    left: 25%;
+    align-items: center; /* Centre le texte verticalement */
+    justify-content: center;
+    box-sizing: border-box;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s ease-in-out;
+}
+
+
+button.btn-connexion:hover{
+    transform: scale(1.1);
+}
+
+button.btn-connexion:active{
+    border: 2px solid rgba(255, 255, 255, 0.84);
+}
+
+
+
+ol{
+   margin-left: -20px;
+}
+
+footer h6{
+    display: flex;
+    color: white;
+    margin-top: 5px;
+}
+
+
+/* Header responsive */
+header {
+    width: 100%;
+    height: 13vh; /* Prend 15% de la hauteur de l'écran */
+    background-image: url("../images/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 3px 15px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    width: 100%;
+    height: 4vh;
+    background-image: url("../images/abstract-blue-background-simple-design-for-your-website-free-vector.jpg");
+    background-size: cover;
+    background-position: bottom;
+    box-shadow: 3px -10px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+
+header img {
+    width: auto; /* Largeur fixe */
+    height: auto; /* Hauteur ajustée automatiquement */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+header img:hover {
+    transform: scale(1.1);
+}
+
+header img:active {
+    border: 2px solid #fdf521;
+    box-shadow: 0 10px 25px rgba(236, 228, 69, 0.84);
+}
+
+/* Contenu principal */
+main {
+    text-align: center;
+    padding: 20px;
+}
+
+main h1 {
+    color: white;
+    font-size: 2.5rem;
+}
+
+
+.barre_navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+
+.barre_navigation ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Utilisation de flexbox pour aligner les éléments */
+}
+
+.barre_navigation .menu {
+    margin: 0 10px;
+}
+
+.left-icons,
+.right-icons {
+    display: flex;
+    align-items: center;
+}
+
+/* Adapter les icônes pour les différentes tailles d'écran */
+@media (max-width: 600px) {
+    .barre_navigation img {
+        height: 50px;
+    }
+}
+
+/* Ajout d'une mise en page responsive */
+@media (max-width: 768px) {
+    header {
+        height: 12vh;
+        border-radius: 0;
+    }
+    header h2 {
+        font-size: 1.5rem;
+    }
+
+    main h1 {
+        font-size: 2rem;
+    }
+}
