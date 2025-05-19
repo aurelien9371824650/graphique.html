@@ -12,7 +12,7 @@ async function chargerParametres() {
         console.log("📡 Chargement des paramètres...");
 
         const referenceProduit = document.getElementById("prod-data").getAttribute("data-produit-id");
-        const response = await fetch(`http://127.0.0.1:5000/api/parametres?reference=${referenceProduit}`);
+        const response = await fetch(`api/parametres?reference=${referenceProduit}`);
         if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
 
         const parametres = await response.json();
@@ -85,7 +85,7 @@ function telechargerPDF() {
 async function fetchChartData(id_parametre) {
     let referenceProduit = document.getElementById("prod-data").getAttribute("data-produit-id");
     try {
-        const response = await fetch(`http://127.0.0.1:5000/api/data/${id_parametre}?reference=${referenceProduit}`);
+        const response = await fetch(`api/data/${id_parametre}?reference=${referenceProduit}`);
         return await response.json();
     } catch (error) {
         console.error("Erreur API :", error);

@@ -7,7 +7,7 @@ class Config:
     DB_USER = "admin"  # Vérifie cet utilisateur
     DB_PASSWORD = "admin"  # Vérifie le mot de passe
     DB_HOST = "192.168.9.2"  # Vérifie l'adresse IP ou le nom d'hôte
-    DB_NAME = "bdd_ecei"  # Vérifie le nom de la base
+    DB_NAME = "bdd_ecei_2"  # Vérifie le nom de la base
     DB_PORT = 3306  # Assure-toi que le port est correct
 
     # Construire l'URL de connexion pour MySQL

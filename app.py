@@ -1,13 +1,16 @@
-import os
 import hashlib
+import os
+from functools import wraps
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask import flash
+from flask import session, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from config import Config
-from functools import wraps
-from flask import session, redirect, url_for
-from flask import Flask, render_template, request, jsonify, send_from_directory
-from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 from flask_cors  import CORS
+
+
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -22,15 +25,18 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     nom_role = db.Column(db.String)
 
+
 class Client(db.Model):
     __tablename__ = 'clients'
     id = db.Column(db.Integer, primary_key=True)
     nom = db.Column(db.String(255))
+
 
 class Operateur(db.Model):
     __tablename__ = 'operateurs'
@@ -39,13 +45,14 @@ class Operateur(db.Model):
     id_role = db.Column(db.Integer, db.ForeignKey('roles.id'))
     role = db.relationship("Role", backref="operateurs")
 
+
 class Famille(db.Model):
     __tablename__ = 'familles'
 
     id = db.Column(db.Integer, primary_key=True)
     nom_famille = db.Column(db.String(100))
 
-    # Relation explicite avec Produit
+    # relation avec Produit
     produits = db.relationship('Produit', back_populates='famille', lazy=True)
 
 
@@ -60,16 +67,31 @@ class Produit(db.Model):
     Commentaire = db.Column(db.String(255))
     Photo = db.Column(db.String(512))
 
-    # Relation vers Famille
     famille = db.relationship('Famille', back_populates='produits', lazy=True)
+
+
+class Lot(db.Model):
+    __tablename__ = 'lot'
+
+    numero_lot = db.Column(db.Integer, primary_key=True)
+    Date_fabrication = db.Column(db.DateTime)
+    id_produit = db.Column(db.Integer, db.ForeignKey('produits.id'), nullable=False)
+    id_client = db.Column(db.Integer, db.ForeignKey('clients.id'), nullable=False)
+
+    fabrications = db.relationship('Fabrication', backref='lot', lazy=True)
+    produit = db.relationship('Produit', backref='lots', lazy=True)
+    client = db.relationship('Client', backref='lots', lazy=True)
+
 
 class Fabrication(db.Model):
     __tablename__ = 'fabrications'
+
     id = db.Column(db.Integer, primary_key=True)
-    sn = db.Column(db.String(255))
-    Date_fabrication = db.Column(db.Date)
-    id_produit = db.Column(db.Integer, db.ForeignKey('produits.id'))
-    id_client = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    sn = db.Column(db.String(255), nullable=False)
+    id_lot = db.Column(db.Integer, db.ForeignKey('lot.numero_lot'), nullable=False)
+
+
+
 
 class Parametre(db.Model):
     __tablename__ = 'parametres'
@@ -82,8 +104,6 @@ class Parametre(db.Model):
     id_produit = db.Column(db.Integer, db.ForeignKey('produits.id'), nullable=False)  # Clé étrangère vers la table 'produits'
     id_unite = db.Column(db.Integer, db.ForeignKey('unites.id'), nullable=False)  # Clé étrangère vers la table 'unites'
     Type_parametre = db.Column(db.Integer, db.ForeignKey('types.id'), nullable=False)  # Clé étrangère vers la table 'types'
-    Nom_parametre1 = db.Column(db.String(40))
-    Nom_parametre2 = db.Column(db.String(40))
 
     # Relations
     produit = db.relationship('Produit', backref='parametres', lazy=True)
@@ -118,6 +138,9 @@ class Mesure(db.Model):
     parametre = db.relationship('Parametre', backref=db.backref('mesures', cascade="all, delete"), foreign_keys=[id_parametre])
 
 
+
+
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -137,6 +160,7 @@ def login_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -170,6 +194,90 @@ def login():
     else:
         flash('Identifiant incorrect', 'danger')
         return redirect(url_for('connexion'))
+
+
+@app.route('/gestion', methods=['GET', 'POST'])
+@login_required
+def gestionOperateur():
+    # Vérifier si l'utilisateur est connecté en vérifiant la session
+    if 'user_id' in session and 'user_role' in session:
+        user_id = session['user_id']
+        user_role = session['user_role']
+
+        # Vérifier si l'utilisateur a le rôle 1 (administrateur)
+        if user_role == 1:
+            # Récupérer les opérateurs et effectuer la jointure sur les rôles
+            operateurs = Operateur.query.join(Role).all()
+
+            # Formater les résultats pour afficher "Nom", "Mdp", "Droit" et "Supprimer"
+            result = [
+                {"Nom": op.Identifiant, "Mdp": op.Mdp, "Droit": op.role.nom_role, "Supprimer": "❌"}
+                for op in operateurs
+            ]
+
+            # Afficher la page de gestion avec les résultats formatés
+            return render_template('gestion.html', operateurs=result)
+
+        # Si l'utilisateur n'a pas le rôle adéquat, ne rien renvoyer ni afficher
+        return "", 204  # Retourne un code HTTP 204 (No Content), ce qui signifie qu'il n'y a rien à afficher
+
+    # Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
+    flash('Vous devez être connecté pour accéder à cette page.', 'danger')
+    return redirect(url_for('connexion'))
+
+
+@app.route('/droits')
+@login_required
+def droits():
+    return render_template('droits.html')
+
+@app.route('/get-operateurs')
+@login_required
+def get_operateurs():
+    operateurs = Operateur.query.join(Role).all()
+    result = [{"Nom": op.Identifiant, "Mdp": op.Mdp, "Droit": op.role.nom_role, "Supprimer": "❌"} for op in operateurs]
+    return jsonify(result)
+
+@app.route('/save-operateurs', methods=['POST'])
+@login_required
+def save_operateurs():
+    data = request.get_json()
+
+    for row in data:
+        if row['Nom']:  # Si le champ 'Nom' est renseigné
+            operateur = Operateur.query.filter_by(Identifiant=row['Nom']).first()
+            if operateur:
+                # Si un mot de passe est fourni et qu'il diffère de celui existant, le mettre à jour
+                if row['Mdp'] and row['Mdp'] != operateur.Mdp:  # Vérifier si le mot de passe a changé
+                    mdp_hash = hashlib.md5(row['Mdp'].encode('utf-8')).hexdigest()  # Hachage MD5 du mot de passe
+                    operateur.Mdp = mdp_hash  # Mettre à jour le mot de passe uniquement s'il est différent
+
+                # Mettre à jour le rôle si nécessaire
+                operateur.role = Role.query.filter_by(nom_role=row['Droit']).first()
+            else:
+                # Ajouter un nouvel opérateur
+                if row['Mdp']:  # Assurez-vous que le mot de passe est fourni
+                    mdp_hash = hashlib.md5(row['Mdp'].encode('utf-8')).hexdigest()  # Hachage MD5 du mot de passe
+                    role = Role.query.filter_by(nom_role=row['Droit']).first()
+                    new_operateur = Operateur(Identifiant=row['Nom'], Mdp=mdp_hash, role=role)
+                    db.session.add(new_operateur)
+
+    db.session.commit()
+    return jsonify({"status": "success"})
+
+
+@app.route('/')
+def connexion():
+    return render_template('connexion.html')
+
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)  # Déconnecte l'utilisateur
+    flash('Déconnexion réussie!', 'success')
+    return redirect(url_for('connexion'))
+
 
 @app.route('/static/<path:filename>')
 @login_required
@@ -255,78 +363,6 @@ def test_data():
         "Nombre de mesures": mesure_count
     })
 
-
-
-@app.route('/gestion', methods=['GET', 'POST'])
-@login_required
-def gestionOperateur():
-    # Vérifier si l'utilisateur est connecté en vérifiant la session
-    if 'user_id' in session and 'user_role' in session:
-        user_id = session['user_id']
-        user_role = session['user_role']
-
-        # Vérifier si l'utilisateur a le rôle 1 (administrateur)
-        if user_role == 1:
-            # Récupérer les opérateurs et effectuer la jointure sur les rôles
-            operateurs = Operateur.query.join(Role).all()
-
-            # Formater les résultats pour afficher "Nom", "Mdp", "Droit" et "Supprimer"
-            result = [
-                {"Nom": op.Identifiant, "Mdp": op.Mdp, "Droit": op.role.nom_role, "Supprimer": "❌"}
-                for op in operateurs
-            ]
-
-            # Afficher la page de gestion avec les résultats formatés
-            return render_template('gestion.html', operateurs=result)
-
-        # Si l'utilisateur n'a pas le rôle adéquat, ne rien renvoyer ni afficher
-        return "", 204  # Retourne un code HTTP 204 (No Content), ce qui signifie qu'il n'y a rien à afficher
-
-    # Si l'utilisateur n'est pas connecté, rediriger vers la page de connexion
-    flash('Vous devez être connecté pour accéder à cette page.', 'danger')
-    return redirect(url_for('connexion'))
-
-
-@app.route('/droits')
-@login_required
-def droits():
-    return render_template('droits.html')
-
-@app.route('/get-operateurs')
-@login_required
-def get_operateurs():
-    operateurs = Operateur.query.join(Role).all()
-    result = [{"Nom": op.Identifiant, "Mdp": op.Mdp, "Droit": op.role.nom_role, "Supprimer": "❌"} for op in operateurs]
-    return jsonify(result)
-
-@app.route('/save-operateurs', methods=['POST'])
-@login_required
-def save_operateurs():
-    data = request.get_json()
-
-    for row in data:
-        if row['Nom']:  # Si le champ 'Nom' est renseigné
-            operateur = Operateur.query.filter_by(Identifiant=row['Nom']).first()
-            if operateur:
-                # Si un mot de passe est fourni et qu'il diffère de celui existant, le mettre à jour
-                if row['Mdp'] and row['Mdp'] != operateur.Mdp:  # Vérifier si le mot de passe a changé
-                    mdp_hash = hashlib.md5(row['Mdp'].encode('utf-8')).hexdigest()  # Hachage MD5 du mot de passe
-                    operateur.Mdp = mdp_hash  # Mettre à jour le mot de passe uniquement s'il est différent
-
-                # Mettre à jour le rôle si nécessaire
-                operateur.role = Role.query.filter_by(nom_role=row['Droit']).first()
-            else:
-                # Ajouter un nouvel opérateur
-                if row['Mdp']:  # Assurez-vous que le mot de passe est fourni
-                    mdp_hash = hashlib.md5(row['Mdp'].encode('utf-8')).hexdigest()  # Hachage MD5 du mot de passe
-                    role = Role.query.filter_by(nom_role=row['Droit']).first()
-                    new_operateur = Operateur(Identifiant=row['Nom'], Mdp=mdp_hash, role=role)
-                    db.session.add(new_operateur)
-
-    db.session.commit()
-    return jsonify({"status": "success"})
-
-
 @app.route('/Graphique')
 def graphique():
     reference = request.args.get('reference')
@@ -345,17 +381,18 @@ def get_parametre_par_reference(reference):
         'nom_parametre': parametre.nom_parametre
     })
 
-@app.route('/')
-def connexion():
-    return render_template('connexion.html')
 
 
 
-@app.route('/logout')
-def logout():
-    session.pop('user_id', None)  # Déconnecte l'utilisateur
-    flash('Déconnexion réussie!', 'success')
-    return redirect(url_for('connexion'))
+
+
+
+
+
+
+
+
+
 
 
 
@@ -405,7 +442,7 @@ def get_produits():
                 "Date_modification": produit.Date_modification,
                 "nom_famille": produit.nom_famille
             })
-
+        print(result)
         return jsonify(result)
 
     except Exception as e:
@@ -426,54 +463,71 @@ def save_produit():
 @login_required
 def fabrication():
     try:
-        # Récupérer les fabrications avec les informations liées (produits et clients)
-        fabrications = Fabrication.query.join(Produit).join(Client).add_columns(
-            Fabrication.sn, Produit.Reference, Produit.Designation, Fabrication.Date_fabrication, Client.nom
-        ).all()
+        lots = (
+            db.session.query(Lot)
+            .join(Produit, Lot.id_produit == Produit.id)
+            .join(Client, Lot.id_client == Client.id)
+            .add_columns(
+                Lot.numero_lot,
+                Produit.Reference,
+                Produit.Designation,
+                Lot.Date_fabrication,
+                Client.nom
+            )
+            .all()
+        )
 
-        # Préparer la liste des résultats pour passer aux templates
         result = []
-        for fabrication in fabrications:
+        for _, numero_lot, reference, designation, date_fab, nom_client in lots:
             result.append({
-                "Numéro de Série": fabrication.sn,
-                "Référence": fabrication.Reference,
-                "Désignation": fabrication.Designation,
-                "Date de Fabrication": fabrication.Date_fabrication,
-                "Client": fabrication.nom
+                "Numéro de lot": numero_lot,
+                "Référence": reference,
+                "Désignation": designation,
+                "Date de Fabrication": date_fab,
+                "Client": nom_client
             })
 
-        return render_template('fabrication.html', fabrication=result)
+        return render_template('fabrication.html', lot=result)
 
     except Exception as e:
-        # En cas d'erreur de connexion ou autre, on renvoie une erreur
         return jsonify({"error": str(e)}), 500
 
 
-@app.route('/get-fabrication')
-@login_required
-def get_fabrication():
-    try:
-        # Récupérer les fabrications avec les informations liées (produits et clients)
-        fabrications = Fabrication.query.join(Produit).join(Client).add_columns(
-            Fabrication.sn, Produit.Reference, Produit.Designation, Fabrication.Date_fabrication, Client.nom
-        ).all()
 
-        # Préparer la liste des résultats à envoyer en JSON
+
+@app.route('/get-lots')
+@login_required
+def get_lots():
+    try:
+        lots = (
+            db.session.query(Lot)
+            .join(Produit, Lot.id_produit == Produit.id)
+            .join(Client, Lot.id_client == Client.id)
+            .add_columns(
+                Lot.numero_lot,
+                Produit.Reference,
+                Produit.Designation,
+                Lot.Date_fabrication,
+                Client.nom
+            )
+            .all()
+        )
+
         result = []
-        for fabrication in fabrications:
+        for _, numero_lot, reference, designation, date_fab, nom_client in lots:
             result.append({
-                "Numéro de Série": fabrication.sn,
-                "Référence": fabrication.Reference,
-                "Désignation": fabrication.Designation,
-                "Date de Fabrication": fabrication.Date_fabrication,
-                "Client": fabrication.nom
+                "numero_lot": numero_lot,
+                "reference": reference,
+                "designation": designation,
+                "dateFab": date_fab,
+                "Client": nom_client
             })
 
         return jsonify(result)
 
     except Exception as e:
-        # En cas d'erreur de connexion ou autre, on renvoie une erreur
         return jsonify({"error": str(e)}), 500
+
 
 
 
@@ -499,24 +553,134 @@ def ajoutfabrication():
     return render_template('ajoutfab.html', nouveau_sn=nouveau_sn)
 
 
-@app.route('/ajoutfab')
+@app.route('/ajoutfab', methods=['GET'])
 @login_required
 def ajoutfab():
-    reference_produit = request.args.get('reference')  # Récupère la référence du produit depuis l'URL
-    produit = Produit.query.filter_by(Reference=reference_produit).first()  # Cherche le produit dans la base de données
+    # Si la méthode est GET (récupérer la page pour l'ajout)
+    reference_produit = request.args.get('reference')
+    produit = Produit.query.filter_by(Reference=reference_produit).first()
 
     if produit:
-        # Récupère le dernier numéro de série dans la table Fabrication
+        # Récupérer le dernier numéro de série de la table Fabrication
         dernier_sn = db.session.query(Fabrication.sn).order_by(Fabrication.sn.desc()).first()
-        if dernier_sn:
-            # Prend le dernier numéro de série et ajoute 1
-            nouveau_sn = int(dernier_sn[0]) + 1
+        nouveau_sn = int(dernier_sn[0]) + 1 if dernier_sn else 1
 
-        # Passe le nouveau numéro de série et la référence produit au template HTML
-        return render_template('ajoutfab.html', produit=produit, reference_produit=reference_produit, nouveau_sn=nouveau_sn)
+        # Retourner le formulaire HTML avec la référence du produit et le nouveau numéro de série
+        return render_template(
+            'ajoutfab.html',
+            produit=produit,
+            reference_produit=reference_produit,
+            nouveau_sn=nouveau_sn
+        )
     else:
         flash('Produit non trouvé.', 'danger')
         return redirect(url_for('produits'))
+
+@app.route('/ajouter_lot_et_fabrications', methods=['POST'])
+@login_required
+def ajouter_lot_et_fabrications():
+    data = request.get_json()
+    ligne = data.get('lignes', [])[0]  # On prend la première ligne uniquement
+
+    nom_client = ligne.get('clients')
+    ref = ligne.get('ref')
+    date_fab = ligne.get('dateFab')
+    nb_piece = ligne.get('nbPiece')
+    premier_sn = ligne.get('numSerie')
+
+    # Vérifier que toutes les informations nécessaires sont présentes
+    if not nom_client or not ref or not date_fab or not nb_piece or not premier_sn:
+        return jsonify({"message": "Toutes les informations sont requises : client, produit, date, quantité de pièces, numéro de série."}), 400
+
+    # Vérifier que nb_piece est un entier valide
+    try:
+        nb_piece = int(nb_piece)
+    except ValueError:
+        return jsonify({"message": "La quantité de pièces doit être un nombre entier valide."}), 400
+
+    # Vérifier que premier_sn est un entier valide
+    try:
+        premier_sn = int(premier_sn)
+    except ValueError:
+        return jsonify({"message": "Le numéro de série doit être un nombre entier valide."}), 400
+
+    # Vérifier la validité de la date
+    try:
+        date_fab_parsed = datetime.strptime(date_fab, "%d/%m/%Y").date()
+    except ValueError:
+        return jsonify({"message": "Format de date invalide, attendu jj/mm/aaaa"}), 400
+
+    # Vérification du client
+    client = Client.query.filter_by(nom=nom_client).first()
+    if not client:
+        # Si le client n'existe pas, créer un nouveau client
+        client = Client(nom=nom_client)
+        db.session.add(client)
+        db.session.commit()
+
+    # Vérification du produit
+    produit = Produit.query.filter_by(Reference=ref).first()
+    if not produit:
+        return jsonify({"message": "Produit non trouvé"}), 404
+
+    # Créer le lot sans se soucier du numéro de lot
+    lot = Lot(
+        Date_fabrication=date_fab_parsed,
+        id_produit=produit.id,
+        id_client=client.id
+    )
+    db.session.add(lot)
+    db.session.commit()
+
+    # Récupérer le dernier id_lot généré
+    id_lot = lot.numero_lot  # Ici, id_lot est auto-généré par la base de données
+
+    # Maintenant créer les fabrications pour ce lot
+    for i in range(nb_piece):  # On s'assure que nb_piece est un entier
+        sn_actuel = str(premier_sn + i)  # On génère les numéros de série
+        fabrication = Fabrication(sn=sn_actuel, id_lot=id_lot)  # Utilisation de id_lot
+        db.session.add(fabrication)
+
+    db.session.commit()
+
+    return jsonify({"message": "Lot et fabrications ajoutés avec succès", "id_lot": id_lot}), 200
+
+
+@app.route('/fichefab', methods=['GET', 'POST'])
+def fichefab():
+    reference_lot = request.args.get('reference')
+    numero_lot = request.args.get('numero')
+    lot = Lot.query.filter_by(numero_lot=reference_lot).first()
+
+    if request.method == 'POST':
+        # Mettre à jour le produit
+        if 'reference' in request.form:
+            produit = Produit.query.filter_by(Reference=request.form['reference']).first()
+            if produit:
+                lot.id_produit = produit.id
+
+        # Mettre à jour le client (via le nom/désignation dans le champ, attention si non unique)
+        if 'designation' in request.form:
+            client = Produit.query.filter_by(Designation=request.form['designation']).first()
+            if client:
+                lot.id_client = client.id
+
+        if 'date' in request.form:
+            lot.Date_fabrication = request.form['date']
+
+        if 'numSerie' in request.form:
+            lot.numero_lot = request.form['numSerie']
+
+        db.session.commit()
+        flash('Lot mis à jour avec succès!', 'success')
+        return redirect(url_for('fichefab', reference=lot.numero_lot))
+
+    return render_template('fichefab.html',
+                           lot=lot,
+                           lot_Reference=lot.produit.Reference,
+                           lot_Designation=lot.produit.Designation,
+                           lot_Date_modification=lot.Date_fabrication,
+                           lot_numSerie=lot.numero_lot)
 
 
 @app.route('/analyse')
@@ -750,13 +914,6 @@ def update_settings():
 
     return jsonify({"success": True})
 
-@app.route("/api/reference_produit/<int:id_produit>")
-def get_reference_produit(id_produit):
-    produit = Produit.query.get(id_produit)
-    if produit:
-        return jsonify({"reference": produit.Reference})
-    else:
-        return jsonify({"error": "Produit non trouvé"}), 404
 
 @app.route('/get_mappings', methods=['GET']) #Route pour recuperer les Unites et Type de param en fonction des ID
 def get_mappings():
@@ -822,11 +979,6 @@ def delete_parametre(param_id):
         return jsonify({"success": False, "error": str(e)}), 500
 
 
-
-@app.route('/fichefab')
-@login_required
-def fichefab():
-    return render_template('fichefab.html')
 
 @app.route('/mesures')
 @login_required
