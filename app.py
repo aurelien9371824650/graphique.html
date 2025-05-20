@@ -331,6 +331,7 @@ def get_chart_data(id_parametre):
 
 
 @app.route('/api/parametres')
+@login_required
 def get_parametres():
     reference = request.args.get('reference')
     if reference:
@@ -364,11 +365,13 @@ def test_data():
     })
 
 @app.route('/Graphique')
+@login_required
 def graphique():
     reference = request.args.get('reference')
     return render_template('graphique.html', reference_produit=reference)
 
 @app.route('/api/parametre_par_reference/<reference>')
+@login_required
 def get_parametre_par_reference(reference):
     produit = db.session.query(Produit).filter_by(reference=reference).first()
     if not produit:
@@ -380,9 +383,6 @@ def get_parametre_par_reference(reference):
         'id_parametre': parametre.id_parametre,
         'nom_parametre': parametre.nom_parametre
     })
-
-
-
 
 
 
@@ -652,14 +652,17 @@ def fichefab():
     numero_lot = request.args.get('numero')
     lot = Lot.query.filter_by(numero_lot=reference_lot).first()
 
+    if not lot:
+        flash("Lot introuvable", "danger")
+        return redirect(url_for('home'))
+
     if request.method == 'POST':
-        # Mettre à jour le produit
+        # Mettre à jour le lot
         if 'reference' in request.form:
             produit = Produit.query.filter_by(Reference=request.form['reference']).first()
             if produit:
                 lot.id_produit = produit.id
 
-        # Mettre à jour le client (via le nom/désignation dans le champ, attention si non unique)
         if 'designation' in request.form:
             client = Produit.query.filter_by(Designation=request.form['designation']).first()
             if client:
@@ -675,12 +678,16 @@ def fichefab():
         flash('Lot mis à jour avec succès!', 'success')
         return redirect(url_for('fichefab', reference=lot.numero_lot))
 
+    # ✅ Récupérer les paramètres du produit lié à ce lot
+    parametres = Parametre.query.filter_by(id_produit=lot.id_produit).all()
+
     return render_template('fichefab.html',
                            lot=lot,
                            lot_Reference=lot.produit.Reference,
                            lot_Designation=lot.produit.Designation,
                            lot_Date_modification=lot.Date_fabrication,
-                           lot_numSerie=lot.numero_lot)
+                           lot_numSerie=lot.numero_lot,
+                           parametres=parametres)
 
 
 @app.route('/analyse')

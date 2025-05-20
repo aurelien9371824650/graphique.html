@@ -129,7 +129,7 @@ window.onload = function () {
                             title: "Modification", field: "modification", width: 120, formatter: function (cell) {
                                 var referenceProduit = cell.getRow().getData().Reference;
                                 var link = "/ficheprod?reference=" + referenceProduit;
-                                return "<a href='" + link + "' class='fiche-fabrication'>✏️</a>";
+                                return "<a href='" + link + "' class='fiche-produit'>✏️</a>";
                             }
                         },
                     ],

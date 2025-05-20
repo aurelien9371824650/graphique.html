@@ -7,6 +7,7 @@
 {% block script %}
     <script type="text/javascript" src="../static/scripts/TAB_Lot.js"></script>
     <script type="text/javascript" src="../static/scripts/loadimage.js"></script>
+    <script src="{{ url_for('static', filename='html2pdf/dist/html2pdf.bundle.js') }}"></script>
 {% endblock %}
 
 {% block marque %}
@@ -41,8 +42,34 @@
                 <br><br>
                 <a href="mesures"> <button id="mesBtn" class="mesBtn" style="margin-left: -200px;">Réaliser les mesures</button></a>
                 <br><br><br>
-                <button id="pdfBtn" class="pdfBtn" style="margin-left: -200px;">Générer le PDF <img style="margin-right: -20px ;height: 30px; width: 28px;" src="../static/images/icon-pdf.png"></button>
-
+                <button onclick="genererPDF()" class="pdfBtn" style="margin-left: -200px">Générer le PDF <img style="margin-right: -20px ;height: 30px; width: 28px;" src="../static/images/icon-pdf.png"></button>
+                <div id="contenu-cache">
+     <h2>Paramètres du produit : {{ lot_Designation }}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nom du paramètre</th>
+                <th>Unité</th>
+                <th>Type</th>
+                <th>Valeur théorique</th>
+                <th>Min</th>
+                <th>Max</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for param in parametres %}
+                <tr>
+                    <td>{{ param.Nom_parametre }}</td>
+                    <td>{{ param.unite.nom_unite if param.unite }}</td>
+                    <td>{{ param.type.nom_type if param.type }}</td>
+                    <td>{{ param.Valeur_theorique }}</td>
+                    <td>{{ param.Valeur_min }}</td>
+                    <td>{{ param.Valeur_max }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </div>
             </div>
             <div class="col-4">
                 <div id="table-container"></div>
@@ -62,6 +89,6 @@
                 </ol>
             </div>
     </div>
-</div>
+
 
 {% endblock %}

@@ -72,3 +72,25 @@ window.onload = function() {
         });
     });
 };
+function genererPDF() {
+      const element = document.getElementById('contenu-cache');
+
+      // 1. Rendre la div temporairement visible
+      element.style.display = 'block';
+
+      // 2. Générer le PDF
+      html2pdf()
+        .set({
+          margin: 10,
+          filename: 'rapport-cache.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        })
+        .from(element)
+        .save()
+        .then(() => {
+          // 3. Re-cacher la div après la génération
+          element.style.display = 'none';
+        });
+    }

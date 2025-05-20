@@ -1,5 +1,5 @@
 window.onload = function() {
-    fetch("/get-fabrication")
+    fetch("/get-lots")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("Erreur lors de la récupération des données depuis le serveur !");
@@ -9,8 +9,8 @@ window.onload = function() {
         .then((data) => {
 
             data.sort((a, b) => {
-                const dateA = new Date(a["Date de Fabrication"]);
-                const dateB = new Date(b["Date de Fabrication"]);
+                const dateA = new Date(a["dateFab"]);
+                const dateB = new Date(b["dateFab"]);
                 return dateB - dateA; // Tri descendant: plus récent en premier
             });
 
@@ -55,12 +55,12 @@ window.onload = function() {
                 data: data,
                 rowHeight: 33,
                 columns: [
-                    {title: "Numéro de série", field: "Numéro de Série", width: 120, headerFilter: "input"},
-                    {title: "Référence", field: "Référence", width: 350, headerFilter: "input"},
-                    {title: "Désignation", field: "Désignation", width: 350, headerFilter: "input"},
+                    {title: "Numéro de lot", field: "numero_lot", width: 120, headerFilter: "input"},
+                    {title: "Référence", field: "reference", width: 350, headerFilter: "input"},
+                    {title: "Désignation", field: "designation", width: 350, headerFilter: "input"},
                     {
                         title: "Date de Fabrication",
-                        field: "Date de Fabrication",
+                        field: "dateFab",
                         width: 150,
                         // Fonction de tri des dates
                         sorter: function (a, b) {
@@ -82,8 +82,9 @@ window.onload = function() {
                     {title: "Client", field: "Client", width: 150, headerFilter: "input"},
                     {
                         title: "Modification", field: "modification", width: 120, formatter: function (cell) {
-                            var link = "/fichefab";
-                            return "<a href='" + link + "'>✏️</a>";
+                            var referenceLot = cell.getRow().getData().numero_lot;
+                            var link = "/fichefab?reference=" + referenceLot;
+                            return "<a href='" + link + "' class='fiche-produit'>✏️</a>";
                         }
                     },
                 ],
